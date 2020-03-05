@@ -55,7 +55,7 @@ To change the structure of the src folder or the dist folder visit the [paths.js
 
 Here all the paths are shown and can be changed to your liking.
 
-## File stucture in folders
+## File structure in folders
 ___
     src
         > assets
@@ -81,7 +81,7 @@ ___
 -  `gulp dev`
    -  Does the same as the default command
 -  `gulp svg`
-   -  Runs the svg formatting
+   -  Runs the SVG formatting
 -  `gulp clean`
    -  Cleans the dist folder
 -  `gulp sassFormat`
@@ -95,13 +95,13 @@ ___
 -  `gulp scripts`
    -  Runs the JavaScript formatting
 -  `gulp injectToHTML`
-   -  Injects styles and JavaScripts into the html files
+   -  Injects styles and JavaScripts into the HTML files
 -  `gulp serve`
-   -  Starts a browserSync instance
+   -  Starts a browser-sync instance
 -  `gulp watch`
    -  Starts a watch of all the files in src
 -  `gulp reload`
-   -  Reloads the browserSync instance
+   -  Reloads the browser-sync instance
 
 ## Change browser support
 ___
@@ -118,6 +118,6 @@ To change the support just change the "defaults" tag under browserslist:
 ## Help
 ___
 ### I cannot run any commands:
-    If you're getting and error saying you don't have permession to run scripts run this command in your powershell
+    If you're getting an error saying you don't have permission to run scripts run this command in your PowerShell
 
 * `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
