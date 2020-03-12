@@ -34,25 +34,17 @@ const rename = require("gulp-rename");
 const browserSync = require('browser-sync');
 
 // Paths
-const path = require('path');
-const paths = require('./paths');
+const config = require('./gulp-config');
 
-const settings = {
-	isBuild: false,
-	openBrowser: true,
-	createSourcemaps: false
-};
-
+// Select the html files to inject css and js into
 const pagesToInject = [
     "index.html"
 ];
 
-const basePages = [],
-	distPages = [];
+const basePages = [];
 
 pagesToInject.forEach(function(element) {
-	basePages.push(paths.base + element);
-	distPages.push(paths.dist + element);
+	basePages.push(config.base + element);
 });
 
 /**
@@ -64,7 +56,7 @@ pagesToInject.forEach(function(element) {
 // SVG
 // --------------------------------------------------
 function svg() {
-	return gulp.src(paths.svg)
+	return gulp.src(config.svg)
 		.pipe(svgmin(function(file) { // Minify and clean up svg files
 			const prefix = path.basename(file.relative, path.extname(file.relative));
 			return {
@@ -82,7 +74,7 @@ function svg() {
 			$('svg').attr('style', 'display:none');
 		}))
 		.pipe(rename('combined.svg'))
-		.pipe(gulp.dest( paths.distSVG))
+		.pipe(gulp.dest( config.distSVG))
 };
 
 
@@ -90,12 +82,12 @@ function svg() {
 // IMAGES
 // --------------------------------------------------
 function images() {
-	return gulp.src(paths.images)
+	return gulp.src(config.images)
 		.pipe(imagemin({
 			progressive: true,
 			interlaced: true
 		}))
-		.pipe(gulp.dest(paths.distImages))
+		.pipe(gulp.dest(config.distImages))
 };
 
 
@@ -103,8 +95,8 @@ function images() {
 // VIDEO
 // --------------------------------------------------
 function video() {
-    return gulp.src(paths.video)
-        .pipe(gulp.dest(paths.distVideo))
+    return gulp.src(config.video)
+        .pipe(gulp.dest(config.distVideo))
 };
 
 
@@ -112,8 +104,8 @@ function video() {
 // FONTS
 // --------------------------------------------------
 function fonts() {
-	return gulp.src(paths.fonts)
-		.pipe(gulp.dest(paths.dist))
+	return gulp.src(config.fonts)
+		.pipe(gulp.dest(config.dist))
 };
 
 
@@ -123,18 +115,18 @@ function fonts() {
 function injectToHTML() {
 
 	let sources = [
-		paths.injectSourceCSS, paths.injectSourceJS
+		config.injectSourceCSS, config.injectSourceJS
 	];
 
 	return gulp.src(basePages)
 		.pipe(inject(gulp.src(sources, {read: false}), {
 			addRootSlash: false,
-			ignorePath: paths.dist
+			ignorePath: config.dist
 		}))
 		.pipe(fileInclude().on('error', function() {
 			console.log(arguments);
 		}))
-		.pipe( gulp.dest( paths.dist ) )
+		.pipe( gulp.dest( config.dist ) )
 };
 
 
@@ -143,13 +135,13 @@ function injectToHTML() {
 // Uses browserslist from package.json
 // --------------------------------------------------
 function sassFormat() {
-	return gulp.src(paths.sass)
-		.pipe(gulpif(settings.createSourcemaps, sourcemaps.init()))
+	return gulp.src(config.sass)
+		.pipe(gulpif(config.settings.createSourcemaps, sourcemaps.init()))
 		.pipe(sass().on('error', sass.logError))
 		.pipe(autoprefixer())
-		.pipe(gulpif(settings.isBuild, cleanCSS({compatibility: 'ie8'})))
-		.pipe(gulpif(settings.createSourcemaps, sourcemaps.write('./maps')))
-		.pipe(gulp.dest(paths.distCSS))
+		.pipe(gulpif(config.settings.isBuild, cleanCSS({compatibility: 'ie8'})))
+		.pipe(gulpif(config.settings.createSourcemaps, sourcemaps.write('./maps')))
+		.pipe(gulp.dest(config.distCSS))
 };
 
 
@@ -157,10 +149,10 @@ function sassFormat() {
 // JAVASCRIPT - Concat and uglify
 // --------------------------------------------------
 function JSFormat() {
-	return gulp.src(paths.js)
+	return gulp.src(config.js)
 		.pipe(concat('combined.js'))
-		.pipe(uglify())
-		.pipe(gulp.dest(paths.distJS))
+		.pipe(gulpif(config.settings.isBuild, uglify()))
+		.pipe(gulp.dest(config.distJS))
 };
 
 
@@ -168,26 +160,9 @@ function JSFormat() {
 // CLEAN
 // --------------------------------------------------
 function clean() {
-	return del( paths.dist + '*' );
+	return del( config.dist + '*' );
 };
 
-
-/* LINT - Out of order
-// LINT - Out of order
-// Make sure JS and CSS follow best practises
-// --------------------------------------------------
-// const jshint = require('gulp-jshint');
-
-// function lintJS() {
-// 	return gulp.src( paths.js)
-// 		.pipe(jshint())
-// 		.pipe(jshint.reporter('jshint-stylish') )
-// 		.pipe(jshint.reporter('fail') ).on('error', function() {
-// 			console.log( chalk.green("\n\nYou messed up   ") + chalk.yellow(cool()) + "\n\n" );
-// 		})
- };
-
-*/
 
 //
 // SERVE
@@ -203,20 +178,20 @@ function reload(done) {
 function serve(done) {
 	server.init({
 		server: {
-			baseDir: paths.dist
+			baseDir: config.dist
 			}
 	});
 	done();
 }
 
 function watch (){
-	gulp.watch(paths.js, gulp.series(JSFormat, reload));
-	gulp.watch(paths.sass, gulp.series(sassFormat, reload));
-	gulp.watch(paths.images, gulp.series(images, reload));
-	gulp.watch(paths.video, gulp.series(video, reload));
-	gulp.watch(paths.svg, gulp.series(svg, reload));
-	gulp.watch(paths.fonts, gulp.series(fonts, reload));
-	gulp.watch(paths.watchHTML, gulp.series(injectToHTML, reload));
+	gulp.watch(config.js, gulp.series(JSFormat, reload));
+	gulp.watch(config.sass, gulp.series(sassFormat));
+	gulp.watch(config.images, gulp.series(images));
+	gulp.watch(config.video, gulp.series(video));
+	gulp.watch(config.svg, gulp.series(svg));
+	gulp.watch(config.fonts, gulp.series(fonts));
+	gulp.watch(config.watchHTML, gulp.series(injectToHTML, reload));
 }
 
 
@@ -237,9 +212,8 @@ exports.images = images;
 exports.video = video;
 exports.fonts = fonts;
 exports.svg = svg;
-exports.scripts = JSFormat;
+exports.JSFormat = JSFormat;
 exports.injectToHTML = injectToHTML;
 exports.serve = serve;
 exports.watch = watch;
 exports.reload = reload;
-// exports.lintJS = lintJS;

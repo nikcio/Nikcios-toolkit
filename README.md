@@ -92,7 +92,7 @@ ___
    -  Copies videos
 -  `gulp fonts`
    -  Copies fonts
--  `gulp scripts`
+-  `gulp JSFormat`
    -  Runs the JavaScript formatting
 -  `gulp injectToHTML`
    -  Injects styles and JavaScripts into the HTML files
