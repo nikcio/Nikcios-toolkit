@@ -34,6 +34,7 @@ const rename = require("gulp-rename");
 const browserSync = require('browser-sync');
 
 // Paths
+const path = require('path');
 const config = require('./gulp-config');
 
 // Select the html files to inject css and js into
