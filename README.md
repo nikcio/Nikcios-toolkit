@@ -121,3 +121,6 @@ ___
     If you're getting an error saying you don't have permission to run scripts run this command in your PowerShell
 
 * `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+
+### I'm reinstalling an existing project and have errors:
+    When reinstalling delete the `pachage.json-lock` and the `node_modules` folder then run `npm install`.

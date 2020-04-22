@@ -15,7 +15,7 @@ const cleanCSS = require('gulp-clean-css');
 
 //Javascript processing
 const concat = require('gulp-concat');
-const uglify = require('gulp-uglify');
+const uglify = require('gulp-uglify-es').default;
 
 //Image processing
 const imagemin = require('gulp-imagemin');
@@ -38,9 +38,7 @@ const path = require('path');
 const config = require('./gulp-config');
 
 // Select the html files to inject css and js into
-const pagesToInject = [
-    "index.html"
-];
+const pagesToInject = config.injectpages;
 
 const basePages = [];
 
@@ -187,7 +185,7 @@ function serve(done) {
 
 function watch (){
 	gulp.watch(config.js, gulp.series(JSFormat, reload));
-	gulp.watch(config.sass, gulp.series(sassFormat));
+	gulp.watch(config.sass, gulp.series(sassFormat, reload));
 	gulp.watch(config.images, gulp.series(images));
 	gulp.watch(config.video, gulp.series(video));
 	gulp.watch(config.svg, gulp.series(svg));

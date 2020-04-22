@@ -28,7 +28,11 @@ const settings = {
 	isBuild: false,
 	createSourcemaps: false
 };
-	
+
+// Place all files you want to work on here. Example: "index.html" or "html/index.html"
+const Injectpages = [
+	"index.html",
+]
 
 module.exports  = {
 	base: root,	
@@ -54,4 +58,6 @@ module.exports  = {
 	watchHTML: watchHTML,
 
 	settings: settings,
+
+	Injectpages: Injectpages,
 }
