@@ -24,9 +24,11 @@ var root = 'src/',
 // These settings change how the output of gulp are processed
 // isBuild will determine if css and js will be minified
 // createSourcemaps will determine if sassFormat will create sourcemaps
+// fileVersion adds a date marker to your files: "?28390120"
 const settings = {
 	isBuild: false,
-	createSourcemaps: false
+	createSourcemaps: false,
+	fileVersion: false
 };
 
 // Place all files you want to work on here. Example: "index.html" or "html/index.html"

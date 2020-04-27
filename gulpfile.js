@@ -38,7 +38,7 @@ const path = require('path');
 const config = require('./gulp-config');
 
 // Select the html files to inject css and js into
-const pagesToInject = config.injectpages;
+const pagesToInject = config.Injectpages;
 
 const basePages = [];
 
@@ -117,11 +117,18 @@ function injectToHTML() {
 		config.injectSourceCSS, config.injectSourceJS
 	];
 
+	const d = "?" + Date.now();
+
 	return gulp.src(basePages)
-		.pipe(inject(gulp.src(sources, {read: false}), {
+		.pipe(gulpif(config.settings.fileVersion, 
+			inject(gulp.src(sources, {read: false}), {
+			addRootSlash: false,
+			ignorePath: config.dist,
+			addSuffix: d
+		}), inject(gulp.src(sources, {read: false}), {
 			addRootSlash: false,
 			ignorePath: config.dist
-		}))
+		})))
 		.pipe(fileInclude().on('error', function() {
 			console.log(arguments);
 		}))
