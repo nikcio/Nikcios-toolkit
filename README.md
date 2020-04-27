@@ -51,7 +51,7 @@ ___
 
 ## How to change the file structure
 ___
-To change the structure of the src folder or the dist folder visit the [paths.js](./paths.js)
+To change the structure of the src folder or the dist folder visit the [gulp-config.js](./gulp-config.js)
 
 Here all the paths are shown and can be changed to your liking.
 
