@@ -1,7 +1,7 @@
 # Gulpfile.js documentation
 * Gulp version: 4.0.2
-* Package version: 1.1.0
-* Last updated: April 2020
+* Package version: 1.2.0
+* Last updated: Late April 2020
 
 ## Requires:
 ___
