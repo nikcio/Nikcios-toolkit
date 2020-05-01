@@ -1,0 +1,22 @@
+body{
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+img{
+    width: 100%;
+    height: 100%;
+}
+
+a{
+    text-decoration: none;
+}
+
+body.show-menu{
+    overflow-y: hidden;
+}
+
+@import 'nav.scss';
+@import 'footer.scss';

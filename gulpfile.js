@@ -40,11 +40,8 @@ const config = require('./gulp-config');
 // Select the html files to inject css and js into
 const pagesToInject = config.Injectpages;
 
-const basePages = [];
-
-pagesToInject.forEach(function(element) {
-	basePages.push(config.base + element);
-});
+// HTML files to inject into
+const basePages = config.Injectpages;
 
 /**
  * Tasks =========================================================================================
@@ -56,23 +53,23 @@ pagesToInject.forEach(function(element) {
 // --------------------------------------------------
 function svg() {
 	return gulp.src(config.svg)
-		.pipe(svgmin(function(file) { // Minify and clean up svg files
-			const prefix = path.basename(file.relative, path.extname(file.relative));
-			return {
-				plugins: [
-					{ cleanupIDs: { prefix: prefix + "-", minify: true } },
-					{ removeDoctype: true },
-					{ removeComments: true },
-					{ cleanupNumericValues: { floatPrecision: 2 } },
-					{ removeAttrs: { attrs: '(fill|stroke)' } }
-				]
-			}
-		}) )
-		.pipe(svgstore({ inlineSvg: true })) // Combine into 1 sprite sheet
-		.pipe(cheerio(function($) { // Modify resulting <svg> element
-			$('svg').attr('style', 'display:none');
-		}))
-		.pipe(rename('combined.svg'))
+		// .pipe(svgmin(function(file) { // Minify and clean up svg files
+		// 	const prefix = path.basename(file.relative, path.extname(file.relative));
+		// 	return {
+		// 		plugins: [
+		// 			{ cleanupIDs: { prefix: prefix + "-", minify: true } },
+		// 			{ removeDoctype: true },
+		// 			{ removeComments: true },
+		// 			{ cleanupNumericValues: { floatPrecision: 2 } },
+		// 			{ removeAttrs: { attrs: '(fill|stroke)' } }
+		// 		]
+		// 	}
+		// }) )
+		// .pipe(svgstore({ inlineSvg: true })) // Combine into 1 sprite sheet
+		// .pipe(cheerio(function($) { // Modify resulting <svg> element
+		// 	$('svg').attr('style', 'display:none');
+		// }))
+		// .pipe(rename('combined.svg'))
 		.pipe(gulp.dest( config.distSVG))
 };
 
@@ -129,6 +126,14 @@ function injectToHTML() {
 			addRootSlash: false,
 			ignorePath: config.dist
 		})))
+		.pipe(inject(gulp.src([config.partials]), {
+			starttag: '<!-- inject:partial:{{path}} -->',
+			relative: true,
+			transform: function (filePath, file) {
+			  // return file contents as string
+			  return file.contents.toString('utf8')
+			}
+		}))
 		.pipe(fileInclude().on('error', function() {
 			console.log(arguments);
 		}))
@@ -197,7 +202,7 @@ function watch (){
 	gulp.watch(config.video, gulp.series(video));
 	gulp.watch(config.svg, gulp.series(svg));
 	gulp.watch(config.fonts, gulp.series(fonts));
-	gulp.watch(config.watchHTML, gulp.series(injectToHTML, reload));
+	gulp.watch(config.html, gulp.series(injectToHTML, reload));
 }
 
 

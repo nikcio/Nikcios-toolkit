@@ -1,7 +1,7 @@
 # Gulpfile.js documentation
 * Gulp version: 4.0.2
-* Package version: 1.2.0
-* Last updated: Late April 2020
+* Package version: 1.3.0
+* Last updated: May 2020
 
 ## Requires:
 ___
@@ -18,7 +18,7 @@ ___
 ### 2. Modify [package.json](./package.json)
 ```
 {
-   "name": "Webtimistens-toolset",
+   "name": "Nikcios-toolset",
    .
    .
    .
@@ -46,7 +46,7 @@ ___
 * HTML style and JavaScript injecting
 * Automatic browser synchronization
 * Image minification
-* SVG formatting (minification + concat)
+* SVG formatting (minification + concat) - Out of order
 * Copy video and fonts
 
 ## How to change the file structure
@@ -60,11 +60,17 @@ ___
     src
         > assets
             > img
-            > svg
-            > video
+               > 350x150.png
+            > fav
+               > favicon.ico
         > js
+            > nav.js
         > sass
-        index.html
+            > _nav.scss
+            > _footer.scss
+            > base.scss
+        > html
+            > index.html
 
     dist
         > css
@@ -114,6 +120,15 @@ To change the support just change the "defaults" tag under browserslist:
     "defaults"
   ]
 ```
+## How to inject files
+To inject a html partial just the following function after creating the file inside your partial directory:
+```
+<!-- inject:partial:partials/htmlfile.html -->
+<!-- endinject -->
+```
+
+## How to use SASS
+When using SASS you can decide which files should be copied by typing a underscore before files that should now be copied.
 
 ## Help
 ___
@@ -123,4 +138,4 @@ ___
 * `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
 
 ### I'm reinstalling an existing project and have errors:
-    When reinstalling delete the `pachage.json-lock` and the `node_modules` folder then run `npm install`.
+    When reinstalling delete the `package.json-lock` and the `node_modules` folder then run `npm install`.

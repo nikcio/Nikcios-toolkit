@@ -1,6 +1,6 @@
 {
-  "name": "Webtimistens-toolset",
-  "version": "1.2.0",
+  "name": "Nikcios-toolset",
+  "version": "1.3.0",
   "description": "",
   "main": "index.js",
   "dependencies": {},
@@ -30,8 +30,8 @@
     "type": "git",
     "url": "git+https://github.com/AUTHOR/PROJECT_NAME.git"
   },
-  "author": "Webtimisten",
-  "license": "ISC",
+  "author": "Nikcio",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/AUTHOR/PROJECT_NAME/issues"
   },
